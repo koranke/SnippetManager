@@ -97,7 +97,7 @@ namespace SnippetManager
             var obj = e.Item as Snippet;
             if (obj != null)
             {
-                if (listBoxCategories.SelectedItem == null || (obj.Category != null && obj.Category.Contains(listBoxCategories.SelectedItem.ToString())))
+                if (listBoxCategories.SelectedItem == null || (obj.Category != null && obj.Category.Equals(listBoxCategories.SelectedItem.ToString())))
                     e.Accepted = true;
                 else
                     e.Accepted = false;
@@ -136,6 +136,16 @@ namespace SnippetManager
 
             textSearch.Text = "";
             searchItemFound = false;
+
+            if (listBoxCategories.SelectedIndex >= 0)
+            {
+                buttonNewSnippet.IsEnabled = true;
+            } else
+            {
+                buttonNewSnippet.IsEnabled = false;
+            }
+
+            //listBoxCategories
         }
 
         private void dataGridSnippets_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -151,25 +161,6 @@ namespace SnippetManager
         {
             handleSave();
         }
-
-        //private void dataGridSnippets_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        //{
-        //    Snippet snippet = (((DataGrid) sender).CurrentItem as Snippet);
-        //    if (snippet.Category == null)
-        //    {
-        //        snippet.Category = listBoxCategories.SelectedItem.ToString();
-        //    }
-        //}
-
-        //private void dataGridSnippets_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        //{
-        //    handleEndEdit();
-        //}
-
-        //private void dataGridSnippets_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        //{
-        //    handleEndEdit();
-        //}
 
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -229,8 +220,9 @@ namespace SnippetManager
 
         private void windowMain_Loaded(object sender, RoutedEventArgs e)
         {
-            listBoxCategories.SelectedIndex = 0;
             handleFileLoad();
+            listBoxCategories.SelectedItem = listBoxCategories.Items.GetItemAt(0);
+            dataGridSnippets.Items.Refresh();
         }
 
         private void dataGridSnippets_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -296,5 +288,17 @@ namespace SnippetManager
                 }
             }
         }
+
+        private void dataGridSnippets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dataGridSnippets.SelectedIndex >= 0)
+            {
+                buttonDeleteSnippet.IsEnabled = true;
+            } else
+            {
+                buttonDeleteSnippet.IsEnabled = false;
+            }
+        }
+
     }
 }

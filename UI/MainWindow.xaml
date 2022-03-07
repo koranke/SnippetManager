@@ -5,17 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnippetManager"
         mc:Ignorable="d"
-        Title="SnippetManager" Height="750" Width="1200" Background="#FF97AB9E" BorderThickness="5,5,5,5" Loaded="windowMain_Loaded">
+        Title="SnippetManager" Height="750" Width="1200" Background="#FF97AB9E" BorderThickness="15,15,15,15" Loaded="windowMain_Loaded">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="400*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="493*"/>
             <ColumnDefinition Width="200*"/>
         </Grid.ColumnDefinitions>
-        <Menu IsMainMenu="True" x:Name="menuMain" Height="24" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" FontSize="14">
+        <Menu IsMainMenu="True" x:Name="menuMain" Height="40" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" FontSize="16">
             <MenuItem Header="File">
                 <MenuItem x:Name="menuOpen" Header="_Open" Click="menuOpen_Click"/>
                 <MenuItem x:Name="menuSave" Header="Save" Click="menuSave_Click" IsEnabled="False"/>
@@ -23,17 +24,17 @@
             </MenuItem>
             <Separator Padding="20,2,0,2"/>
             <TextBox x:Name="textSearch" Width="150"/>
-            <Button x:Name="buttonSearch" Content="Search" Click="buttonSearch_Click" />
-            <Button x:Name="buttonReset" Content="Reset" Click="buttonReset_Click" />
+            <Button x:Name="buttonSearch" Content="Search" Click="buttonSearch_Click" FontSize="16" Padding="5,5,5,5" />
+            <Button x:Name="buttonReset" Content="Reset" Click="buttonReset_Click" FontSize="16" Padding="5,5,5,5" />
         </Menu>
         <ListBox x:Name="listBoxCategories" Grid.Column="1" Grid.Row="1" FontSize="16" SelectionChanged="listBoxCategories_SelectionChanged" Background="#FFCFD5D8"/>
         <DataGrid x:Name="dataGridSnippets" Grid.Column="0" Grid.Row="1" FontSize="16" AutoGenerateColumns="False" 
                   SelectionMode="Single" 
-                  CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="False" BeginningEdit="dataGridSnippets_BeginningEdit" RowEditEnding="dataGridSnippets_RowEditEnding" SelectedCellsChanged="dataGridSnippets_SelectedCellsChanged" CellEditEnding="dataGridSnippets_CellEditEnding">
+                  CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectedCellsChanged="dataGridSnippets_SelectedCellsChanged" MouseDoubleClick="dataGridSnippets_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category" Binding="{Binding Category}" />
                 <DataGridTextColumn x:Name="dgtDescription" Header="Description" Binding="{Binding Description}" Width="50*" />
-                <DataGridTextColumn x:Name="dbtContent" Header="Content" Binding="{Binding Content}" Width="100*" >
+                <DataGridTextColumn x:Name="dbtContent" Header="Content" Binding="{Binding Content}" Width="100*" Visibility="Hidden" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -48,5 +49,7 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button x:Name="buttonNewSnippet" Content="New Snippet" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Click="buttonNewSnippet_Click" Padding="5,5,5,5"/>
+        <Button x:Name="buttonDeleteSnippet" Content="Delete Snippet" HorizontalAlignment="Left" Margin="130,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" Click="buttonDeleteSnippet_Click"/>
     </Grid>
 </Window>

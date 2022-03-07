@@ -86,7 +86,7 @@ namespace SnippetManager
                 snippets.loadFromFile(currentFile);
 
                 dataGridSnippets.ItemsSource = snippets.SnippetList;
-                listBoxCategories.ItemsSource = snippets.getCategories();
+                listBoxCategories.ItemsSource = snippets.Categories;
                 listBoxCategories.SelectedItem = null;
                 menuSave.IsEnabled = true;
             }
@@ -144,8 +144,6 @@ namespace SnippetManager
             {
                 buttonNewSnippet.IsEnabled = false;
             }
-
-            //listBoxCategories
         }
 
         private void dataGridSnippets_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -218,6 +216,16 @@ namespace SnippetManager
             }
         }
 
+        private void handleRefresh()
+        {
+            listBoxCategories.ItemsSource = snippets.Categories;
+            listBoxCategories.Items.Refresh();
+            dataGridSnippets.Items.Refresh();
+
+            listBoxCategories.SelectedIndex = -1;
+            listBoxCategories.SelectedIndex = 0;
+        }
+
         private void windowMain_Loaded(object sender, RoutedEventArgs e)
         {
             handleFileLoad();
@@ -229,6 +237,8 @@ namespace SnippetManager
         {
             SnippetEditor snippetEditor = new SnippetEditor();
             snippetEditor.DataContext = snippets;
+            snippetEditor.textBoxCategory.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Category;
+            snippetEditor.textBoxCategory.Text = ((Snippet)dataGridSnippets.CurrentItem).Category;
             snippetEditor.textBoxDescription.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Description;
             snippetEditor.textBoxDescription.Text = ((Snippet)dataGridSnippets.CurrentItem).Description;
             snippetEditor.textBoxSnippet.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Content;
@@ -257,6 +267,8 @@ namespace SnippetManager
 
             SnippetEditor snippetEditor = new SnippetEditor();
             snippetEditor.DataContext = snippets;
+            snippetEditor.textBoxCategory.DataContext = snippet.Category;
+            snippetEditor.textBoxCategory.Text = snippet.Category;
             snippetEditor.textBoxDescription.DataContext = snippet.Description;
             snippetEditor.textBoxDescription.Text = snippet.Description;
             snippetEditor.textBoxSnippet.DataContext = snippet.Content;
@@ -265,10 +277,12 @@ namespace SnippetManager
 
             if (snippetEditor.isSaveAction)
             {
+                snippet.Category = snippetEditor.textBoxCategory.Text;
                 snippet.Description = snippetEditor.textBoxDescription.Text;
                 snippet.Content = snippetEditor.textBoxSnippet.Text;
                 snippets.SnippetList.Add(snippet);
-                dataGridSnippets.Items.Refresh();
+
+                handleRefresh();
                 handleEndEdit();
             }
 
@@ -282,6 +296,7 @@ namespace SnippetManager
                 {
                     case MessageBoxResult.Yes:
                         handleDelete();
+                        handleRefresh();
                         break;
                     case MessageBoxResult.No:
                         break;

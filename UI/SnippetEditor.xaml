@@ -9,12 +9,15 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="400*"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
-        <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Center" Click="buttonSave_Click" Padding="5,5,5,5" FontSize="16" Margin="0,0,100,0"/>
-        <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Center" Click="buttonCancel_Click" Padding="5,5,5,5" FontSize="16" Margin="0,0,20,0"/>
-        <TextBox x:Name="textBoxDescription" Margin="0,0,0,0" Grid.Row="0" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" />
-        <TextBox x:Name="textBoxSnippet" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" />
+        <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Center" Click="buttonSave_Click" Padding="5,5,5,5" FontSize="16" Margin="0,0,100,0" IsTabStop="True" TabIndex="3"/>
+        <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Center" Click="buttonCancel_Click" Padding="5,5,5,5" FontSize="16" Margin="0,0,20,0" IsTabStop="True" TabIndex="4"/>
+        <TextBox x:Name="textBoxDescription" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" IsTabStop="True" TabIndex="1"/>
+        <TextBox x:Name="textBoxSnippet" Margin="0,0,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" IsTabStop="True" TabIndex="2"/>
+        <Label x:Name="labelCategory" Content="Category" HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+        <TextBox x:Name="textBoxCategory" HorizontalAlignment="Left" Margin="100,0,0,0" TextWrapping="Wrap" VerticalAlignment="Center" Width="380" FontSize="16" IsTabStop="True" TabIndex="0"/>
     </Grid>
 </Window>

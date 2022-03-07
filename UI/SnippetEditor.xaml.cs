@@ -24,6 +24,8 @@ namespace SnippetManager
         public SnippetEditor()
         {
             InitializeComponent();
+            textBoxDescription.Focusable = true;
+            textBoxDescription.Focus();
         }
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)

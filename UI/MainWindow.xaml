@@ -18,22 +18,28 @@
         </Grid.ColumnDefinitions>
         <Menu IsMainMenu="True" x:Name="menuMain" Height="40" VerticalAlignment="Top" Grid.Column="0" Grid.Row="0" FontSize="16">
             <MenuItem Header="File">
+                <MenuItem x:Name="menuNew" Header="_New" IsEnabled="False"/>
                 <MenuItem x:Name="menuOpen" Header="_Open" Click="menuOpen_Click"/>
                 <MenuItem x:Name="menuSave" Header="Save" Click="menuSave_Click" IsEnabled="False"/>
                 <MenuItem x:Name="menuExit" Header="_Exit" Click="menuExit_Click"/>
+            </MenuItem>
+            <MenuItem Header="Configuration">
+                <MenuItem x:Name="menuSetDefaultFile" Header="Set Default File" IsEnabled="False"/>
+                <MenuItem x:Name="menuClearDefaultFile" Header="Clear Default File" IsEnabled="False" />
             </MenuItem>
             <Separator Padding="20,2,0,2"/>
             <TextBox x:Name="textSearch" Width="150"/>
             <Button x:Name="buttonSearch" Content="Search" Click="buttonSearch_Click" FontSize="16" Padding="5,5,5,5" />
             <Button x:Name="buttonReset" Content="Reset" Click="buttonReset_Click" FontSize="16" Padding="5,5,5,5" />
         </Menu>
-        <ListBox x:Name="listBoxCategories" Grid.Column="1" Grid.Row="1" FontSize="16" SelectionChanged="listBoxCategories_SelectionChanged" Background="#FFCFD5D8">
+        <ListBox x:Name="listBoxCategories" Grid.Column="1" Grid.Row="1" FontSize="16" 
+                 SelectionChanged="listBoxCategories_SelectionChanged" Background="#FFCFD5D8">
         </ListBox>
         <DataGrid x:Name="dataGridSnippets" Grid.Column="0" Grid.Row="1" FontSize="16" AutoGenerateColumns="False" 
                   SelectionMode="Single" 
                   CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectedCellsChanged="dataGridSnippets_SelectedCellsChanged" MouseDoubleClick="dataGridSnippets_MouseDoubleClick" SelectionChanged="dataGridSnippets_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Category" Binding="{Binding Category}" />
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Visibility="Hidden" />
                 <DataGridTextColumn x:Name="dgtDescription" Header="Description" Binding="{Binding Description}" Width="50*" />
                 <DataGridTextColumn x:Name="dbtContent" Header="Content" Binding="{Binding Content}" Width="100*" Visibility="Hidden" >
                     <DataGridTextColumn.ElementStyle>

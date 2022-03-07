@@ -11,6 +11,10 @@ namespace SnippetManager
     class Snippets
     {
         public ObservableCollection<Snippet> SnippetList { get; set; } = new ObservableCollection<Snippet>();
+        public ObservableCollection<String> Categories
+        {
+            get { return new ObservableCollection<String>(SnippetList.Select(o => o.Category).ToList().Distinct()); }
+        }
 
         public void saveToFile(String fileName)
         {

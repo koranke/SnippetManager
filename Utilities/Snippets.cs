@@ -18,7 +18,7 @@ namespace SnippetManager
 
         public void saveToFile(String fileName)
         {
-            List<Snippet> sortedSnippets = SnippetList.OrderBy(x => x.Category).ToList();
+            List<Snippet> sortedSnippets = SnippetList.OrderBy(x => x.Category).ThenBy(y => y.Description).ToList();
             try
             {
                 StreamWriter sw = new StreamWriter(fileName);
@@ -47,7 +47,7 @@ namespace SnippetManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                    throw new Exception(e.Message);
             }
         }
 

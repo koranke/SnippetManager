@@ -193,10 +193,17 @@ namespace SnippetManager
 
         private void handleSave()
         {
-            snippets.saveToFile(currentFile);
-            fileHasChanged = false;
-            windowMain.Title = baseTitle + currentFile;
-            menuSave.IsEnabled = false;
+            try
+            {
+                snippets.saveToFile(currentFile);
+                fileHasChanged = false;
+                windowMain.Title = baseTitle + currentFile;
+                menuSave.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error Saving File.", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void handleDelete()

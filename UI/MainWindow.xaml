@@ -57,6 +57,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="buttonNewSnippet" Content="New Snippet" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Click="buttonNewSnippet_Click" Padding="5,5,5,5" IsEnabled="False"/>
-        <Button x:Name="buttonDeleteSnippet" Content="Delete Snippet" HorizontalAlignment="Left" Margin="130,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" Click="buttonDeleteSnippet_Click" IsEnabled="False"/>
+        <Button x:Name="buttonEditSnippet" Content="Edit Snippet" HorizontalAlignment="Left" Margin="130,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" IsEnabled="False" Click="buttonEditSnippet_Click"/>
+        <Button x:Name="buttonDeleteSnippet" Content="Delete Snippet" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" Click="buttonDeleteSnippet_Click" IsEnabled="False"/>
     </Grid>
 </Window>

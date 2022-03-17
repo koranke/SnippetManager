@@ -213,6 +213,41 @@ namespace SnippetManager
             handleEndEdit();
         }
 
+        private void handleEditSnippet()
+        {
+            SnippetEditor snippetEditor = new SnippetEditor();
+            snippetEditor.DataContext = snippets;
+
+            if (dataGridSnippets.CurrentItem != null)
+            {
+                snippetEditor.textBoxCategory.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Category;
+                snippetEditor.textBoxCategory.Text = ((Snippet)dataGridSnippets.CurrentItem).Category;
+                snippetEditor.textBoxDescription.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Description;
+                snippetEditor.textBoxDescription.Text = ((Snippet)dataGridSnippets.CurrentItem).Description;
+                snippetEditor.textBoxSnippet.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Content;
+                snippetEditor.textBoxSnippet.Text = ((Snippet)dataGridSnippets.CurrentItem).Content;
+            }
+            else
+            {
+                snippetEditor.textBoxCategory.DataContext = ((Snippet)dataGridSnippets.SelectedItem).Category;
+                snippetEditor.textBoxCategory.Text = ((Snippet)dataGridSnippets.SelectedItem).Category;
+                snippetEditor.textBoxDescription.DataContext = ((Snippet)dataGridSnippets.SelectedItem).Description;
+                snippetEditor.textBoxDescription.Text = ((Snippet)dataGridSnippets.SelectedItem).Description;
+                snippetEditor.textBoxSnippet.DataContext = ((Snippet)dataGridSnippets.SelectedItem).Content;
+                snippetEditor.textBoxSnippet.Text = ((Snippet)dataGridSnippets.SelectedItem).Content;
+            }
+
+            snippetEditor.ShowDialog();
+
+            if (snippetEditor.isSaveAction)
+            {
+                ((Snippet)dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
+                ((Snippet)dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
+                dataGridSnippets.Items.Refresh();
+                handleEndEdit();
+            }
+        }
+
         private void handleEndEdit()
         {
             if (fileHasChanged == false)
@@ -242,23 +277,7 @@ namespace SnippetManager
 
         private void dataGridSnippets_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            SnippetEditor snippetEditor = new SnippetEditor();
-            snippetEditor.DataContext = snippets;
-            snippetEditor.textBoxCategory.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Category;
-            snippetEditor.textBoxCategory.Text = ((Snippet)dataGridSnippets.CurrentItem).Category;
-            snippetEditor.textBoxDescription.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Description;
-            snippetEditor.textBoxDescription.Text = ((Snippet)dataGridSnippets.CurrentItem).Description;
-            snippetEditor.textBoxSnippet.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Content;
-            snippetEditor.textBoxSnippet.Text = ((Snippet)dataGridSnippets.CurrentItem).Content;
-            snippetEditor.ShowDialog();
-
-            if (snippetEditor.isSaveAction)
-            {
-                ((Snippet)dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
-                ((Snippet)dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
-                dataGridSnippets.Items.Refresh();
-                handleEndEdit();
-            }
+            handleEditSnippet();
         }
 
         private void buttonNewSnippet_Click(object sender, RoutedEventArgs e)
@@ -295,6 +314,11 @@ namespace SnippetManager
 
         }
 
+        private void buttonEditSnippet_Click(object sender, RoutedEventArgs e)
+        {
+            handleEditSnippet();
+        }
+
         private void buttonDeleteSnippet_Click(object sender, RoutedEventArgs e)
         {
             if (dataGridSnippets.SelectedIndex >= 0)
@@ -315,9 +339,11 @@ namespace SnippetManager
         {
             if (dataGridSnippets.SelectedIndex >= 0)
             {
+                buttonEditSnippet.IsEnabled = true;
                 buttonDeleteSnippet.IsEnabled = true;
             } else
             {
+                buttonEditSnippet.IsEnabled = false;
                 buttonDeleteSnippet.IsEnabled = false;
             }
         }

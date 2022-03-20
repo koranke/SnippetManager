@@ -6,6 +6,28 @@
         xmlns:local="clr-namespace:SnippetManager"
         mc:Ignorable="d"
         Title="SnippetManager" Height="750" Width="1200" Background="#FF97AB9E" BorderThickness="15,15,15,15" Loaded="windowMain_Loaded" Closing="windowMain_Closing">
+    <Window.Resources>
+        <Style x:Key="_ListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="_Border"
+                                Padding="2"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="_Border" Property="Background" Value="Yellow"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -34,7 +56,8 @@
             <Button x:Name="buttonReset" Content="Reset" Click="buttonReset_Click" FontSize="16" Padding="5,5,5,5" />
         </Menu>
         <ListBox x:Name="listBoxCategories" Grid.Column="1" Grid.Row="1" FontSize="16" 
-                 SelectionChanged="listBoxCategories_SelectionChanged" Background="#FFCFD5D8">
+                 SelectionChanged="listBoxCategories_SelectionChanged" Background="#FFCFD5D8"
+                 ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
         </ListBox>
         <DataGrid x:Name="dataGridSnippets" Grid.Column="0" Grid.Row="1" FontSize="16" AutoGenerateColumns="False" 
                   SelectionMode="Single" 

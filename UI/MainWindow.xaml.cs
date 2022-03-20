@@ -34,24 +34,15 @@ namespace SnippetManager
 
         private void menuExit_Click(object sender, RoutedEventArgs e)
         {
-            if (fileHasChanged)
-            {
-                switch (MessageBox.Show("Save changes before exiting?", "Save Changes?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question))
-                {
-                    case MessageBoxResult.Yes:
-                        handleSave();
-                        this.Close();
-                        break;
-                    case MessageBoxResult.No:
-                        this.Close();
-                        break;
-                    case MessageBoxResult.Cancel:
-                        break;
+            this.Close();
+        }
 
-                }
-            } else
+        private void windowMain_Closing(object sender, CancelEventArgs e)
+        {
+            bool proceedWithExit = handleApplicationExit();
+            if (!proceedWithExit)
             {
-                this.Close();
+                e.Cancel = true;
             }
         }
 
@@ -69,6 +60,29 @@ namespace SnippetManager
                 Settings.Default.Save();
                 handleFileLoad();
             }
+        }
+
+        private bool handleApplicationExit()
+        {
+            if (fileHasChanged)
+            {
+                switch (MessageBox.Show("Save changes before exiting?", "Save Changes?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question))
+                {
+                    case MessageBoxResult.Yes:
+                        handleSave();
+                        return true;
+                    case MessageBoxResult.No:
+                        return true;
+                    case MessageBoxResult.Cancel:
+                        return false;
+                }
+            }
+            else
+            {
+                return true;
+            }
+
+            return true;
         }
 
         private void handleFileLoad()
@@ -241,8 +255,16 @@ namespace SnippetManager
 
             if (snippetEditor.isSaveAction)
             {
-                ((Snippet)dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
-                ((Snippet)dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
+                if (dataGridSnippets.CurrentItem != null)
+                {
+                    ((Snippet)dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
+                    ((Snippet)dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
+                } 
+                else
+                {
+                    ((Snippet)dataGridSnippets.SelectedItem).Description = snippetEditor.textBoxDescription.Text;
+                    ((Snippet)dataGridSnippets.SelectedItem).Content = snippetEditor.textBoxSnippet.Text;
+                }
                 dataGridSnippets.Items.Refresh();
                 handleEndEdit();
             }
@@ -263,9 +285,6 @@ namespace SnippetManager
             listBoxCategories.ItemsSource = snippets.Categories;
             listBoxCategories.Items.Refresh();
             dataGridSnippets.Items.Refresh();
-
-            listBoxCategories.SelectedIndex = -1;
-            listBoxCategories.SelectedIndex = 0;
         }
 
         private void windowMain_Loaded(object sender, RoutedEventArgs e)

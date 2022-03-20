@@ -203,21 +203,19 @@ namespace SnippetManager
 
             if (textSearch.Text.Length > 0)
             {
-                // Collection which will take your Filter
                 var _itemSourceList = new CollectionViewSource() { Source = snippets.SnippetList };
-
-                //now we add our Filter
                 _itemSourceList.Filter += new FilterEventHandler(searchFilter);
-
-                // ICollectionView the View/UI part 
-                ICollectionView Itemlist = _itemSourceList.View;
-                dataGridSnippets.ItemsSource = Itemlist;
 
                 if (!searchItemFound)
                 {
                     MessageBox.Show("Matching text not found.", "Search Results.", MessageBoxButton.OK, MessageBoxImage.Warning);
                     textSearch.Text = "";
-                    listBoxCategories.SelectedIndex = 0;
+                }
+                else
+                {
+                    listBoxCategories.SelectedIndex = -1;
+                    ICollectionView Itemlist = _itemSourceList.View;
+                    dataGridSnippets.ItemsSource = Itemlist;
                 }
             }
         }

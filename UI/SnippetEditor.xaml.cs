@@ -30,9 +30,19 @@ namespace SnippetManager
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
-            //some save action
-            isSaveAction = true;
-            this.Close();
+            if (textBoxCategory.Text == null || textBoxCategory.Text == "")
+            {
+                MessageBox.Show("Missing Category.", "Unable to Save", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else if (textBoxDescription.Text == null || textBoxDescription.Text == "")
+            {
+                MessageBox.Show("Missing Description.", "Unable to Save", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                isSaveAction = true;
+                this.Close();
+            }
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,6 +63,22 @@ namespace SnippetManager
             }
         }
 
+        private void menuNew_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.DefaultExt = ".snp";
+            saveFileDialog.Filter = "Snippet Files (*.snp)|*.snp";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.Create(saveFileDialog.FileName).Close();
+                currentFile = saveFileDialog.FileName;
+                Settings.Default.lastFile = currentFile;
+                Settings.Default.Save();
+                handleFileLoad();
+            }
+
+        }
+
         private bool handleApplicationExit()
         {
             if (fileHasChanged)
@@ -90,6 +107,11 @@ namespace SnippetManager
             if (currentFile == null)
             {
                 currentFile = Settings.Default.lastFile;
+                if (!File.Exists(currentFile))
+                {
+                    Settings.Default.lastFile = null;
+                    currentFile = null;
+                }
             }
             if (currentFile != null && !currentFile.Equals(""))
             {
@@ -101,8 +123,9 @@ namespace SnippetManager
 
                 dataGridSnippets.ItemsSource = snippets.SnippetList;
                 listBoxCategories.ItemsSource = snippets.Categories;
-                listBoxCategories.SelectedItem = null;
+                listBoxCategories.SelectedIndex = 0;
                 menuSave.IsEnabled = true;
+                buttonNewSnippet.IsEnabled = true;
             }
         }
 
@@ -255,17 +278,32 @@ namespace SnippetManager
 
             if (snippetEditor.isSaveAction)
             {
+                bool isNewCategory = false;
+                if (!snippets.Categories.Contains(snippetEditor.textBoxCategory.Text))
+                {
+                    isNewCategory = true;
+                }
                 if (dataGridSnippets.CurrentItem != null)
                 {
+                    ((Snippet)dataGridSnippets.CurrentItem).Category = snippetEditor.textBoxCategory.Text;
                     ((Snippet)dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
                     ((Snippet)dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
                 } 
                 else
                 {
+                    ((Snippet)dataGridSnippets.SelectedItem).Category = snippetEditor.textBoxCategory.Text;
                     ((Snippet)dataGridSnippets.SelectedItem).Description = snippetEditor.textBoxDescription.Text;
                     ((Snippet)dataGridSnippets.SelectedItem).Content = snippetEditor.textBoxSnippet.Text;
                 }
-                dataGridSnippets.Items.Refresh();
+
+                if (isNewCategory)
+                {
+                    handleRefresh(isNewCategory);
+                }
+                else
+                {
+                    dataGridSnippets.Items.Refresh();
+                }
                 handleEndEdit();
             }
         }
@@ -280,18 +318,25 @@ namespace SnippetManager
             }
         }
 
-        private void handleRefresh()
+        private void handleRefresh(bool isNewCategory)
         {
             listBoxCategories.ItemsSource = snippets.Categories;
             listBoxCategories.Items.Refresh();
+            if (isNewCategory)
+            {
+                listBoxCategories.SelectedIndex = listBoxCategories.Items.Count - 1;
+            }
             dataGridSnippets.Items.Refresh();
         }
 
         private void windowMain_Loaded(object sender, RoutedEventArgs e)
         {
             handleFileLoad();
-            listBoxCategories.SelectedItem = listBoxCategories.Items.GetItemAt(0);
-            dataGridSnippets.Items.Refresh();
+            if (listBoxCategories.SelectedItem != null)
+            {
+                listBoxCategories.SelectedItem = listBoxCategories.Items.GetItemAt(0);
+                dataGridSnippets.Items.Refresh();
+            }
         }
 
         private void dataGridSnippets_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -305,9 +350,6 @@ namespace SnippetManager
             if (listBoxCategories.SelectedIndex >= 0)
             {
                 snippet.Category = (String) listBoxCategories.SelectedItem.ToString();
-            } else
-            {
-                //ph
             }
 
             SnippetEditor snippetEditor = new SnippetEditor();
@@ -322,12 +364,17 @@ namespace SnippetManager
 
             if (snippetEditor.isSaveAction)
             {
+                bool isNewCategory = false;
+                if (!snippets.Categories.Contains(snippetEditor.textBoxCategory.Text))
+                {
+                    isNewCategory = true;
+                }
                 snippet.Category = snippetEditor.textBoxCategory.Text;
                 snippet.Description = snippetEditor.textBoxDescription.Text;
                 snippet.Content = snippetEditor.textBoxSnippet.Text;
                 snippets.SnippetList.Add(snippet);
 
-                handleRefresh();
+                handleRefresh(isNewCategory);
                 handleEndEdit();
             }
 
@@ -346,7 +393,7 @@ namespace SnippetManager
                 {
                     case MessageBoxResult.Yes:
                         handleDelete();
-                        handleRefresh();
+                        handleRefresh(false);
                         break;
                     case MessageBoxResult.No:
                         break;

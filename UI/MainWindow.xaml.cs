@@ -83,7 +83,8 @@ namespace SnippetManager
         {
             if (fileHasChanged)
             {
-                switch (MessageBox.Show("Save changes before exiting?", "Save Changes?", MessageBoxButton.YesNoCancel, MessageBoxImage.Question))
+                switch (MessageBox.Show("Save changes before exiting?", "Save Changes?", MessageBoxButton.YesNoCancel,
+                            MessageBoxImage.Question))
                 {
                     case MessageBoxResult.Yes:
                         handleSave();
@@ -113,9 +114,9 @@ namespace SnippetManager
                     currentFile = null;
                 }
             }
+
             if (currentFile != null && !currentFile.Equals(""))
             {
-
                 windowMain.Title = baseTitle + currentFile;
 
                 snippets = new Snippets();
@@ -134,7 +135,8 @@ namespace SnippetManager
             var obj = e.Item as Snippet;
             if (obj != null)
             {
-                if (listBoxCategories.SelectedItem == null || (obj.Category != null && obj.Category.Equals(listBoxCategories.SelectedItem.ToString())))
+                if (listBoxCategories.SelectedItem == null || 
+                    (obj.Category != null && obj.Category.Equals(listBoxCategories.SelectedItem.ToString())))
                     e.Accepted = true;
                 else
                     e.Accepted = false;
@@ -162,7 +164,7 @@ namespace SnippetManager
         private void listBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Collection which will take your Filter
-            var _itemSourceList = new CollectionViewSource() { Source = snippets.SnippetList };
+            var _itemSourceList = new CollectionViewSource() {Source = snippets.SnippetList};
 
             //now we add our Filter
             _itemSourceList.Filter += new FilterEventHandler(categoryFilter);
@@ -177,10 +179,13 @@ namespace SnippetManager
             if (listBoxCategories.SelectedIndex >= 0)
             {
                 buttonNewSnippet.IsEnabled = true;
-            } else
+            }
+            else
             {
                 buttonNewSnippet.IsEnabled = false;
             }
+
+            dataGridSnippets.Columns[0].Visibility = Visibility.Hidden;
         }
 
         private void dataGridSnippets_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
@@ -203,12 +208,13 @@ namespace SnippetManager
 
             if (textSearch.Text.Length > 0)
             {
-                var _itemSourceList = new CollectionViewSource() { Source = snippets.SnippetList };
+                var _itemSourceList = new CollectionViewSource() {Source = snippets.SnippetList};
                 _itemSourceList.Filter += new FilterEventHandler(searchFilter);
 
                 if (!searchItemFound)
                 {
-                    MessageBox.Show("Matching text not found.", "Search Results.", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Matching text not found.", "Search Results.", MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
                     textSearch.Text = "";
                 }
                 else
@@ -216,6 +222,7 @@ namespace SnippetManager
                     listBoxCategories.SelectedIndex = -1;
                     ICollectionView Itemlist = _itemSourceList.View;
                     dataGridSnippets.ItemsSource = Itemlist;
+                    dataGridSnippets.Columns[0].Visibility = Visibility.Visible;
                 }
             }
         }
@@ -224,6 +231,7 @@ namespace SnippetManager
         {
             textSearch.Text = "";
             listBoxCategories.SelectedIndex = 0;
+            dataGridSnippets.Columns[0].Visibility = Visibility.Hidden;
         }
 
         private void handleSave()
@@ -243,7 +251,7 @@ namespace SnippetManager
 
         private void handleDelete()
         {
-            snippets.SnippetList.Remove(((Snippet)dataGridSnippets.SelectedItem));
+            snippets.SnippetList.Remove(((Snippet) dataGridSnippets.SelectedItem));
             dataGridSnippets.Items.Refresh();
             handleEndEdit();
         }
@@ -255,43 +263,40 @@ namespace SnippetManager
 
             if (dataGridSnippets.CurrentItem != null)
             {
-                snippetEditor.textBoxCategory.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Category;
-                snippetEditor.textBoxCategory.Text = ((Snippet)dataGridSnippets.CurrentItem).Category;
-                snippetEditor.textBoxDescription.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Description;
-                snippetEditor.textBoxDescription.Text = ((Snippet)dataGridSnippets.CurrentItem).Description;
-                snippetEditor.textBoxSnippet.DataContext = ((Snippet)dataGridSnippets.CurrentItem).Content;
-                snippetEditor.textBoxSnippet.Text = ((Snippet)dataGridSnippets.CurrentItem).Content;
+                snippetEditor.textBoxCategory.DataContext = ((Snippet) dataGridSnippets.CurrentItem).Category;
+                snippetEditor.textBoxCategory.Text = ((Snippet) dataGridSnippets.CurrentItem).Category;
+                snippetEditor.textBoxDescription.DataContext = ((Snippet) dataGridSnippets.CurrentItem).Description;
+                snippetEditor.textBoxDescription.Text = ((Snippet) dataGridSnippets.CurrentItem).Description;
+                snippetEditor.textBoxSnippet.DataContext = ((Snippet) dataGridSnippets.CurrentItem).Content;
+                snippetEditor.textBoxSnippet.Text = ((Snippet) dataGridSnippets.CurrentItem).Content;
             }
             else
             {
-                snippetEditor.textBoxCategory.DataContext = ((Snippet)dataGridSnippets.SelectedItem).Category;
-                snippetEditor.textBoxCategory.Text = ((Snippet)dataGridSnippets.SelectedItem).Category;
-                snippetEditor.textBoxDescription.DataContext = ((Snippet)dataGridSnippets.SelectedItem).Description;
-                snippetEditor.textBoxDescription.Text = ((Snippet)dataGridSnippets.SelectedItem).Description;
-                snippetEditor.textBoxSnippet.DataContext = ((Snippet)dataGridSnippets.SelectedItem).Content;
-                snippetEditor.textBoxSnippet.Text = ((Snippet)dataGridSnippets.SelectedItem).Content;
+                snippetEditor.textBoxCategory.DataContext = ((Snippet) dataGridSnippets.SelectedItem).Category;
+                snippetEditor.textBoxCategory.Text = ((Snippet) dataGridSnippets.SelectedItem).Category;
+                snippetEditor.textBoxDescription.DataContext = ((Snippet) dataGridSnippets.SelectedItem).Description;
+                snippetEditor.textBoxDescription.Text = ((Snippet) dataGridSnippets.SelectedItem).Description;
+                snippetEditor.textBoxSnippet.DataContext = ((Snippet) dataGridSnippets.SelectedItem).Content;
+                snippetEditor.textBoxSnippet.Text = ((Snippet) dataGridSnippets.SelectedItem).Content;
             }
 
             snippetEditor.ShowDialog();
 
             if (snippetEditor.isSaveAction)
             {
-                bool isNewCategory = false;
-                if (!snippets.Categories.Contains(snippetEditor.textBoxCategory.Text))
-                {
-                    isNewCategory = true;
-                }
+                bool isNewCategory = !snippets.Categories.Contains(snippetEditor.textBoxCategory.Text);
+
                 if (dataGridSnippets.CurrentItem != null)
                 {
-                    ((Snippet)dataGridSnippets.CurrentItem).Category = snippetEditor.textBoxCategory.Text;
-                    ((Snippet)dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
-                    ((Snippet)dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
-                } 
+                    ((Snippet) dataGridSnippets.CurrentItem).Category = snippetEditor.textBoxCategory.Text;
+                    ((Snippet) dataGridSnippets.CurrentItem).Description = snippetEditor.textBoxDescription.Text;
+                    ((Snippet) dataGridSnippets.CurrentItem).Content = snippetEditor.textBoxSnippet.Text;
+                }
                 else
                 {
-                    ((Snippet)dataGridSnippets.SelectedItem).Category = snippetEditor.textBoxCategory.Text;
-                    ((Snippet)dataGridSnippets.SelectedItem).Description = snippetEditor.textBoxDescription.Text;
-                    ((Snippet)dataGridSnippets.SelectedItem).Content = snippetEditor.textBoxSnippet.Text;
+                    ((Snippet) dataGridSnippets.SelectedItem).Category = snippetEditor.textBoxCategory.Text;
+                    ((Snippet) dataGridSnippets.SelectedItem).Description = snippetEditor.textBoxDescription.Text;
+                    ((Snippet) dataGridSnippets.SelectedItem).Content = snippetEditor.textBoxSnippet.Text;
                 }
 
                 if (isNewCategory)
@@ -302,6 +307,7 @@ namespace SnippetManager
                 {
                     dataGridSnippets.Items.Refresh();
                 }
+
                 handleEndEdit();
             }
         }
@@ -324,6 +330,7 @@ namespace SnippetManager
             {
                 listBoxCategories.SelectedIndex = listBoxCategories.Items.Count - 1;
             }
+
             dataGridSnippets.Items.Refresh();
         }
 
@@ -362,11 +369,8 @@ namespace SnippetManager
 
             if (snippetEditor.isSaveAction)
             {
-                bool isNewCategory = false;
-                if (!snippets.Categories.Contains(snippetEditor.textBoxCategory.Text))
-                {
-                    isNewCategory = true;
-                }
+                var isNewCategory = !snippets.Categories.Contains(snippetEditor.textBoxCategory.Text);
+
                 snippet.Category = snippetEditor.textBoxCategory.Text;
                 snippet.Description = snippetEditor.textBoxDescription.Text;
                 snippet.Content = snippetEditor.textBoxSnippet.Text;
@@ -387,7 +391,8 @@ namespace SnippetManager
         {
             if (dataGridSnippets.SelectedIndex >= 0)
             {
-                switch (MessageBox.Show("Delete Snippet?", "Delete Snippet?", MessageBoxButton.YesNo, MessageBoxImage.Question))
+                switch (MessageBox.Show("Delete Snippet?", "Delete Snippet?", MessageBoxButton.YesNo,
+                            MessageBoxImage.Question))
                 {
                     case MessageBoxResult.Yes:
                         handleDelete();
@@ -405,12 +410,12 @@ namespace SnippetManager
             {
                 buttonEditSnippet.IsEnabled = true;
                 buttonDeleteSnippet.IsEnabled = true;
-            } else
+            }
+            else
             {
                 buttonEditSnippet.IsEnabled = false;
                 buttonDeleteSnippet.IsEnabled = false;
             }
         }
-
     }
 }

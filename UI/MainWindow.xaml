@@ -45,17 +45,17 @@
                 <MenuItem x:Name="menuSave" Header="Save" Click="menuSave_Click" IsEnabled="False"/>
                 <MenuItem x:Name="menuExit" Header="_Exit" Click="menuExit_Click"/>
             </MenuItem>
-            <MenuItem Header="Configuration">
+            <MenuItem Header="Configuration" Visibility="Hidden">
                 <MenuItem x:Name="menuSetDefaultFile" Header="Set Default File" IsEnabled="False"/>
                 <MenuItem x:Name="menuClearDefaultFile" Header="Clear Default File" IsEnabled="False" />
             </MenuItem>
             <Separator Padding="20,2,0,2"/>
             <Label Content="Snippet Body Search" Margin="50,0,0,0"/>
-            <TextBox x:Name="textSearch" Width="150"/>
-            <Button x:Name="buttonSearch" Content="Search" Click="buttonSearch_Click" FontSize="16" Padding="5,5,5,5" />
+            <TextBox x:Name="textSearch" Width="150" AcceptsReturn="False"/>
+            <Button x:Name="buttonSearch" Content="Search" Click="buttonSearch_Click" FontSize="16" Padding="5,5,5,5" IsDefault="True" />
             <Button x:Name="buttonReset" Content="Reset" Click="buttonReset_Click" FontSize="16" Padding="5,5,5,5" />
         </Menu>
-        <ListBox x:Name="listBoxCategories" Grid.Column="1" Grid.Row="1" FontSize="16" 
+        <ListBox x:Name="listBoxCategories" Grid.Column="1" Grid.Row="1" FontSize="16"
                  SelectionChanged="listBoxCategories_SelectionChanged" Background="#FFCFD5D8"
                  ItemContainerStyle="{DynamicResource _ListBoxItemStyle}">
         </ListBox>
@@ -63,7 +63,7 @@
                   SelectionMode="Single" 
                   CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectedCellsChanged="dataGridSnippets_SelectedCellsChanged" MouseDoubleClick="dataGridSnippets_MouseDoubleClick" SelectionChanged="dataGridSnippets_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Visibility="Hidden" />
+                <DataGridTextColumn Header="Category" Binding="{Binding Category}" Visibility="Hidden" Width="200" />
                 <DataGridTextColumn x:Name="dgtDescription" Header="Description" Binding="{Binding Description}" Width="50*" />
                 <DataGridTextColumn x:Name="dbtContent" Header="Content" Binding="{Binding Content}" Width="100*" Visibility="Hidden" >
                     <DataGridTextColumn.ElementStyle>
@@ -82,6 +82,6 @@
         </DataGrid>
         <Button x:Name="buttonNewSnippet" Content="New Snippet" HorizontalAlignment="Left" Margin="20,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Click="buttonNewSnippet_Click" Padding="5,5,5,5" IsEnabled="False"/>
         <Button x:Name="buttonEditSnippet" Content="Edit Snippet" HorizontalAlignment="Left" Margin="130,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" IsEnabled="False" Click="buttonEditSnippet_Click"/>
-        <Button x:Name="buttonDeleteSnippet" Content="Delete Snippet" HorizontalAlignment="Left" Margin="240,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" Click="buttonDeleteSnippet_Click" IsEnabled="False"/>
+        <Button x:Name="buttonDeleteSnippet" Content="Delete Snippet" HorizontalAlignment="Left" Margin="235,0,0,0" Grid.Row="2" VerticalAlignment="Center" FontSize="16" Padding="5,5,5,5" Click="buttonDeleteSnippet_Click" IsEnabled="False"/>
     </Grid>
 </Window>

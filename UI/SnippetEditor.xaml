@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnippetManager"
         mc:Ignorable="d"
-        Title="SnippetEditor" Height="450" Width="800" Background="#FF97AB9E" BorderThickness="15,15,15,15">
+        Title="SnippetEditor" Height="900" Width="800" Background="#FF97AB9E" BorderThickness="15,15,15,15">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

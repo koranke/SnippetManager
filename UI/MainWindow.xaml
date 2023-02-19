@@ -61,7 +61,7 @@
         </ListBox>
         <DataGrid x:Name="dataGridSnippets" Grid.Column="0" Grid.Row="1" FontSize="16" AutoGenerateColumns="False" 
                   SelectionMode="Single" 
-                  CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectedCellsChanged="dataGridSnippets_SelectedCellsChanged" MouseDoubleClick="dataGridSnippets_MouseDoubleClick" SelectionChanged="dataGridSnippets_SelectionChanged">
+                  CanUserSortColumns="False" CanUserReorderColumns="False" IsReadOnly="True" SelectedCellsChanged="dataGridSnippets_SelectedCellsChanged" MouseDoubleClick="dataGridSnippets_MouseDoubleClick" SelectionChanged="dataGridSnippets_SelectionChanged" PreviewMouseLeftButtonDown="dataGridSnippets_PreviewMouseLeftButtonDown">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category" Binding="{Binding Category}" Visibility="Hidden" Width="200" />
                 <DataGridTextColumn x:Name="dgtDescription" Header="Description" Binding="{Binding Description}" Width="50*" />

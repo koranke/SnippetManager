@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SnippetManager
 {
@@ -27,6 +18,7 @@ namespace SnippetManager
         Snippets snippets = new Snippets();
         private bool fileHasChanged = false;
         private bool searchItemFound = false;
+        private bool copySelectionToClipboard = false;
 
         public MainWindow()
         {
@@ -188,12 +180,35 @@ namespace SnippetManager
             dataGridSnippets.Columns[0].Visibility = Visibility.Hidden;
         }
 
+        private void dataGridSnippets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dataGridSnippets.SelectedIndex >= 0)
+            {
+                buttonEditSnippet.IsEnabled = true;
+                buttonDeleteSnippet.IsEnabled = true;
+            }
+            else
+            {
+                buttonEditSnippet.IsEnabled = false;
+                buttonDeleteSnippet.IsEnabled = false;
+            }
+        }
+
+        private void dataGridSnippets_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+            copySelectionToClipboard = true;
+            }
+        }
+
         private void dataGridSnippets_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
             Snippet selectedSnippet = dataGridSnippets.SelectedItem as Snippet;
-            if (selectedSnippet != null && selectedSnippet.Content != null)
+            if (selectedSnippet != null && selectedSnippet.Content != null && copySelectionToClipboard)
             {
                 Clipboard.SetText(selectedSnippet.Content);
+                copySelectionToClipboard = false;
             }
         }
 
@@ -401,20 +416,6 @@ namespace SnippetManager
                     case MessageBoxResult.No:
                         break;
                 }
-            }
-        }
-
-        private void dataGridSnippets_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (dataGridSnippets.SelectedIndex >= 0)
-            {
-                buttonEditSnippet.IsEnabled = true;
-                buttonDeleteSnippet.IsEnabled = true;
-            }
-            else
-            {
-                buttonEditSnippet.IsEnabled = false;
-                buttonDeleteSnippet.IsEnabled = false;
             }
         }
     }

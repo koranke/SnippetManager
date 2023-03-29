@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SnippetManager"
         mc:Ignorable="d"
-        Title="SnippetEditor" Height="900" Width="800" Background="#FF97AB9E" BorderThickness="15,15,15,15">
+        Title="SnippetEditor" MinHeight="500" MaxHeight="800" Height="800" Width="800" Background="#FF97AB9E" BorderThickness="15,15,15,15" SizeToContent="Height">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -16,7 +16,8 @@
         <Button x:Name="buttonSave" Content="Save" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Center" Click="buttonSave_Click" Padding="5,5,5,5" FontSize="16" Margin="0,0,100,0" IsTabStop="True" TabIndex="3"/>
         <Button x:Name="buttonCancel" Content="Cancel" HorizontalAlignment="Right" Grid.Row="3" VerticalAlignment="Center" Click="buttonCancel_Click" Padding="5,5,5,5" FontSize="16" Margin="0,0,20,0" IsTabStop="True" TabIndex="4"/>
         <TextBox x:Name="textBoxDescription" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" IsTabStop="True" TabIndex="1" HorizontalContentAlignment="Left" Padding="10,0,0,0" VerticalContentAlignment="Center"/>
-        <TextBox x:Name="textBoxSnippet" Margin="0,0,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" IsTabStop="True" TabIndex="2" Padding="10,0,0,0">
+        <TextBox x:Name="textBoxSnippet" Margin="0,0,0,0" Grid.Row="2" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch" FontSize="16" IsTabStop="True" TabIndex="2" Padding="10,0,0,10">
             <TextBox.Style>
                 <Style TargetType="TextBox">
                     <Setter Property="TextWrapping" Value="Wrap" />

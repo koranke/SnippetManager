@@ -268,7 +268,7 @@ namespace SnippetManager
         {
             snippets.SnippetList.Remove(((Snippet) dataGridSnippets.SelectedItem));
             dataGridSnippets.Items.Refresh();
-            handleEndEdit();
+            handleSave();
         }
 
         private void handleEditSnippet()
@@ -322,18 +322,7 @@ namespace SnippetManager
                 {
                     dataGridSnippets.Items.Refresh();
                 }
-
-                handleEndEdit();
-            }
-        }
-
-        private void handleEndEdit()
-        {
-            if (fileHasChanged == false)
-            {
-                fileHasChanged = true;
-                windowMain.Title = baseTitle + currentFile + "*";
-                menuSave.IsEnabled = true;
+                handleSave();
             }
         }
 
@@ -392,7 +381,7 @@ namespace SnippetManager
                 snippets.SnippetList.Add(snippet);
 
                 handleRefresh(isNewCategory);
-                handleEndEdit();
+                handleSave();
             }
 
         }
